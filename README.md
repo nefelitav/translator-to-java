@@ -16,13 +16,13 @@ I have also provided a bash script to automate the compilation and running of th
 
 As far as the grammar is concerned, I tried to make it as straightforward as possible, so that I can understand it myself.
 The nonterminals I used are the following ones:
-- program &rarr the goal, it contains function declarations and function calls 
-- functions, function &rarr one or more function declarations
-- calls, call &rarr one or more function calls
-- args &rarr the arguments of a function as defined in the declaration
-- passed_args &rarr the arguments passed to a function, can be all kinds of things
-- prefix &rarr string prefix check
-- expr &rarr can be if statement, function call, a concatenation, an identifier, a string literal or a reverse expression
+- program: the goal, it contains function declarations and function calls 
+- functions, function: one or more function declarations
+- calls, call: one or more function calls
+- args: the arguments of a function as defined in the declaration
+- passed_args: the arguments passed to a function, can be all kinds of things
+- prefix: string prefix check
+- expr: can be if statement, function call, a concatenation, an identifier, a string literal or a reverse expression
 
 The main challenge I had to cope with was the differantiation of the function declaration and the function call, which I handled using the regex ') {'.
 
