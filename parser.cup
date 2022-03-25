@@ -8,19 +8,19 @@ parser code {:
 scan with {: return s.next_token(); :};
 
 /* define terminals, non terminals and precedence of terminals */
-terminal COMMA, RBRACK, LPAREN, RPAREN, IF, ELSE, REVERSE, PREFIX, CONCAT, STRING_LITERAL, IDENTIFIER, DEFINITION;
-non terminal program, functions, function, calls, call, args, passed_args, prefix, expr;
+terminal String COMMA, RBRACK, LPAREN, RPAREN, IF, ELSE, REVERSE, PREFIX, CONCAT, STRING_LITERAL, IDENTIFIER, DEFINITION;
+non terminal String program, functions, function, calls, call, args, passed_args, prefix, expr;
 precedence left	COMMA, IF, CONCAT, REVERSE;
 
 /* define grammar and translation to java */
-program ::= functions:e1 calls:e2                                             {: System.out.println("public class Main {\n\tpublic static void main(String[] args) {\n" + e2 + "\n\t}"  + e1 +"\n}"); :};
+program ::= functions:e1 calls:e2                                             {: System.out.println("public class Main {\n\tpublic static void main(String[] args) {\n" + e2 + "\t}"  + e1 +"\n}"); :};
 functions ::= functions:e1 function:e2                                        {: RESULT = e1 + "\n" + e2; :}
         |                                                                     {: RESULT = ""; :};
-function ::= IDENTIFIER:e1 LPAREN args:e2 DEFINITION expr:e3 RBRACK           {: RESULT = "\tpublic static String " + e1 + '(' + e2 + ") {\n\t\t return " + e3 +"\n\t}"; :};
-calls ::= call:e1 calls:e2                                                    {: RESULT = e1 + "\n" + e2; :}  
+function ::= IDENTIFIER:e1 LPAREN args:e2 DEFINITION expr:e3 RBRACK           {: RESULT = "\tpublic static String " + e1 + '(' + e2 + ") {\n\t\t return " + e3 +";\n\t}"; :};
+calls ::= call:e1 calls:e2                                                    {: RESULT = "\t\t" + "System.out.println(" + e1 + ");" + "\n" + e2; :}  
         |                                                                     {: RESULT = ""; :};
-call ::= IDENTIFIER:e1 LPAREN passed_args:e2 RPAREN                           {: RESULT = "\t\tSystem.out.println(" + e1 + '(' + e2 + ')' + ")"; :};
-args ::= IDENTIFIER:e1 COMMA args:e2                                          {: RESULT = e1 + ", " + "String " + e2; :}
+call ::= IDENTIFIER:e1 LPAREN passed_args:e2 RPAREN                           {: RESULT =  e1 + "(" + e2 + ')'; :};
+args ::= IDENTIFIER:e1 COMMA args:e2                                          {: RESULT = "String " + e1 + ", " + e2; :}
         | IDENTIFIER:e1                                                       {: RESULT = "String " + e1; :}
         |                                                                     {: RESULT = ""; :};
 passed_args ::= expr:e1 COMMA passed_args:e2                                  {: RESULT = e1 + ", " + e2; :}
@@ -28,8 +28,8 @@ passed_args ::= expr:e1 COMMA passed_args:e2                                  {:
         |                                                                     {: RESULT = ""; :};
 prefix ::= expr:e1 PREFIX expr:e2                                             {: RESULT = "(" + e2 + ").startsWith(" + e1 + ")"; :};
 expr ::= IF LPAREN prefix:e1 RPAREN expr:e2 ELSE expr:e3                      {: RESULT = "(" + e1 + " ? " + e2 + " : " + e3 + ")"; :}
-        | call:e1                                                             {: RESULT = e1.toString(); :}
-        | IDENTIFIER:e1                                                       {: RESULT = e1.toString(); :}  
-        | STRING_LITERAL:e1                                                   {: RESULT = "'" + e1 + "'"; :}
+        | call:e1                                                             {: RESULT = e1; :}
+        | IDENTIFIER:e1                                                       {: RESULT = e1; :}  
+        | STRING_LITERAL:e1                                                   {: RESULT = '"' + e1 + '"' ; :}
         | REVERSE expr:e1                                                     {: RESULT = "new StringBuilder(" + e1 + ").reverse().toString()"; :}
         | expr:e1 CONCAT expr:e2                                              {: RESULT = e1 + " + " + e2; :};
