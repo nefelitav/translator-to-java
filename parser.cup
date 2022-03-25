@@ -16,7 +16,7 @@ precedence left	COMMA, IF, CONCAT, REVERSE;
 program ::= functions:e1 calls:e2                                             {: System.out.println("public class Main {\n\tpublic static void main(String[] args) {\n" + e2 + "\t}"  + e1 +"\n}"); :};
 functions ::= functions:e1 function:e2                                        {: RESULT = e1 + "\n" + e2; :}
         |                                                                     {: RESULT = ""; :};
-function ::= IDENTIFIER:e1 LPAREN args:e2 DEFINITION expr:e3 RBRACK           {: RESULT = "\tpublic static String " + e1 + '(' + e2 + ") {\n\t\t return " + e3 +";\n\t}"; :};
+function ::= IDENTIFIER:e1 LPAREN args:e2 DEFINITION expr:e3 RBRACK           {: RESULT = "\tpublic static String " + e1 + '(' + e2 + ") {\n\t\treturn " + e3 +";\n\t}"; :};
 calls ::= call:e1 calls:e2                                                    {: RESULT = "\t\t" + "System.out.println(" + e1 + ");" + "\n" + e2; :}  
         |                                                                     {: RESULT = ""; :};
 call ::= IDENTIFIER:e1 LPAREN passed_args:e2 RPAREN                           {: RESULT =  e1 + "(" + e2 + ')'; :};

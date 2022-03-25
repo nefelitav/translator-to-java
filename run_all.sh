@@ -1,25 +1,21 @@
 #!/bin/bash
 
+# clean
+make clean > /dev/null 2>&1
 # compile
 make > /dev/null 2>&1
-make clean
-# run with first input and print output to Main.java
-make execute < input/example1 > Main.java
-# compile Main.java
-javac Main.java
-# run Main.class
-java Main
+# create directory
+mkdir output
 
-# # run with second input and print output to Main.java
-# make execute < input/example2 > Main.java
-# # compile Main.java
-# javac Main.java
-# # run Main.class
-# java Main
-
-# # run with third input and print output to Main.java
-# make execute < input/example3 > Main.java
-# # compile Main.java
-# javac Main.java
-# # run Main.class
-# java Main
+for i in {1..3}
+do
+    echo "Example no ${i}:"
+    # run with each input and print output to Main.java
+    make execute < input/example${i} > output/Main.java
+    cp output/Main.java output/example${i}
+    # compile Main.java
+    javac ./output/Main.java
+    # run Main.class
+    java -classpath output Main
+    printf "\n"
+done
