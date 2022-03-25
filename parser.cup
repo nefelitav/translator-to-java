@@ -7,7 +7,7 @@ parser code {:
 
 scan with {: return s.next_token(); :};
 
-/* define terminals, non terminals and precedence of terminals */
+/* define terminals, nonterminals and precedence of terminals */
 terminal String COMMA, RBRACK, LPAREN, RPAREN, IF, ELSE, REVERSE, PREFIX, CONCAT, STRING_LITERAL, IDENTIFIER, DEFINITION;
 non terminal String program, functions, function, calls, call, args, passed_args, prefix, expr;
 precedence left	COMMA, IF, CONCAT, REVERSE;
